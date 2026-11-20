@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLACKLINE DETAILING — Студия детейлинга в Минске</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  html { scroll-behavior: smooth; }
+  body { background: #09090B; color: #FFFFFF; line-height: 1.5; overflow-x: hidden; }
+  .glow { position: fixed; top: -180px; left: 50%; transform: translateX(-50%); width: 650px; height: 400px; background: radial-gradient(circle, rgba(255,149,0,0.16), transparent 70%); pointer-events: none; z-index: 0; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+  header { position: sticky; top: 0; z-index: 50; background: rgba(9,9,11,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid #1E1E24; padding: 15px 0; }
+  .nav { display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+  .logo span { color: #FF9500; }
+  .links { display: flex; gap: 22px; font-size: 14px; color: #9A9AA6; }
+  .links a { color: inherit; text-decoration: none; transition: 0.2s; }
+  .links a:hover { color: #fff; }
+  .btn { background: #FF9500; color: #000; padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block; transition: 0.25s; border: none; cursor: pointer; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(255,149,0,0.35); }
+  .btn-out { background: #16161B; color: #fff; border: 1px solid #2A2A34; padding: 12px 22px; border-radius: 12px; font-weight: 600; font-size: 14px; text-decoration: none; display: inline-block; transition: 0.25s; }
+  .btn-out:hover { border-color: #FF9500; }
+  .hero { padding: 70px 0 40px; text-align: center; }
+  .badge { display: inline-block; background: rgba(255,149,0,0.12); color: #FF9500; border: 1px solid rgba(255,149,0,0.3); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 18px; }
+  h1 { font-size: clamp(32px, 5vw, 54px); font-weight: 800; line-height: 1.12; letter-spacing: -1px; margin-bottom: 18px; }
+  .hero p { color: #9A9AA6; font-size: 18px; max-width: 640px; margin: 0 auto 30px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 48px; }
+  .stat-card { background: #121216; border: 1px solid #1F1F26; border-radius: 16px; padding: 20px; }
+  .stat-num { font-size: 28px; font-weight: 800; color: #FF9500; }
+  .stat-txt { font-size: 13px; color: #9A9AA6; margin-top: 4px; }
+  section { padding: 56px 0; }
+  h2 { font-size: 30px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .sub { color: #9A9AA6; font-size: 15px; margin-bottom: 30px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .card { background: #121216; border: 1px solid #1F1F26; border-radius: 20px; padding: 26px; transition: 0.3s; opacity: 0; transform: translateY(20px); }
+  .card.show { opacity: 1; transform: translateY(0); }
+  .card:hover { transform: translateY(-5px); border-color: #FF9500; }
+  .price { font-size: 24px; font-weight: 800; color: #FF9500; margin-top: 14px; }
+  .calc-wrap { background: #121216; border: 1px solid #25252E; border-radius: 24px; padding: 30px; }
+  .cls-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .cls-btn { background: #1A1A20; border: 1px solid #2A2A34; color: #fff; padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; }
+  .cls-btn.active { background: #FF9500; color: #000; border-color: #FF9500; }
+  .chk-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #18181E; border-radius: 12px; margin-bottom: 10px; cursor: pointer; }
+  .chk-row input { width: 18px; height: 18px; accent-color: #FF9500; }
+  .total-bar { margin-top: 22px; padding-top: 20px; border-top: 1px solid #25252E; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+  .acc-item { background: #121216; border: 1px solid #1F1F26; border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+  .acc-h { padding: 18px 20px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; }
+  .acc-b { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; color: #9A9AA6; font-size: 14px; }
+  .acc-item.open .acc-b { max-height: 140px; padding-bottom: 18px; }
+  footer { border-top: 1px solid #1F1F26; padding: 32px 0; text-align: center; color: #757580; font-size: 13px; margin-top: 40px; }
+  @media (max-width: 650px) { .links { display: none; } }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<header>
+  <div class="wrap nav">
+    <div class="logo">BLACK<span>LINE</span></div>
+    <div class="links"><a href="#services">Услуги</a><a href="#calc">Калькулятор</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></div>
+    <a href="tg://resolve?domain=temaogg&text=Здравствуйте! Хочу записаться в детейлинг" class="btn">Записаться</a>
+  </div>
+</header>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge">📍 Минск • пр-т Победителей • Гарантия до 5 лет</div>
+    <h1>Премиальный детейлинг и защита кузова вашего авто</h1>
+    <p>Оклейка полиуретановой пленкой SunTek, многоэтапная полировка, керамические составы и глубокая химчистка с разбором салона.</p>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <a href="#calc" class="btn">Рассчитать стоимость</a>
+      <a href="tg://resolve?domain=temaogg&text=Нужна консультация по детейлингу" class="btn-out">Написать в Telegram</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card"><div class="stat-num">1 480+</div><div class="stat-txt">Автомобилей защищено</div></div>
+      <div class="stat-card"><div class="stat-num">5 лет</div><div class="stat-txt">Официальная гарантия на пленку</div></div>
+      <div class="stat-card"><div class="stat-num">4.9 ★</div><div class="stat-txt">Рейтинг на Яндекс.Картах</div></div>
+      <div class="stat-card"><div class="stat-num">24/7</div><div class="stat-txt">Охраняемый теплый бокс</div></div>
+    </div>
+  </div>
+
+  <section id="services">
+    <h2>Основные услуги студии</h2>
+    <div class="sub">Работаем только сертифицированными материалами с соблюдением техпроцесса</div>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Оклейка зон риска</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Бампер, капот, фары, крылья, стойки и зона под ручками полиуретаном 200 мкм.</p>
+        <div class="price">от 1 450 BYN</div>
+      </div>
+      <div class="card">
+        <h3>Полная оклейка кузова</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Максимальная защита всего ЛКП от сколов, пескоструя, реагентов и притертостей.</p>
+        <div class="price">от 4 800 BYN</div>
+      </div>
+      <div class="card">
+        <h3>Полировка + Керамика</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Убираем до 95% царапин, возвращаем зеркальный блеск и наносим 2 слоя керамики.</p>
+        <div class="price">от 850 BYN</div>
+      </div>
+      <div class="card">
+        <h3>Детейлинг-химчистка</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Бережная очистка кожи Nappa, алькантары, потолка и багажника гипоаллергенной химией.</p>
+        <div class="price">от 390 BYN</div>
+      </div>
+      <div class="card">
+        <h3>Шумоизоляция салона</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Снижаем уровень шума в салоне в 2 раза материалами Comfort Mat без скрипов пластика.</p>
+        <div class="price">от 1 100 BYN</div>
+      </div>
+      <div class="card">
+        <h3>Антидождь + Мойка мотора</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Диэлектрическая мойка подкапотного пространства и гидрофоб на все стекла.</p>
+        <div class="price">от 190 BYN</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calc">
+    <h2>Онлайн-калькулятор стоимости</h2>
+    <div class="sub">Выберите класс вашего автомобиля и отметьте нужные работы</div>
+    <div class="calc-wrap">
+      <div class="cls-btns" id="cls-bar">
+        <button class="cls-btn active" data-k="1">Седан / Хэтчбек</button>
+        <button class="cls-btn" data-k="1.15">Кроссовер (+15%)</button>
+        <button class="cls-btn" data-k="1.3">Внедорожник / Микроавтобус (+30%)</button>
+      </div>
+      <label class="chk-row"><span>Оклейка зон риска полиуретаном</span><input type="checkbox" class="srv-chk" value="1450" checked></label>
+      <label class="chk-row"><span>Восстановительная полировка кузова</span><input type="checkbox" class="srv-chk" value="550"></label>
+      <label class="chk-row"><span>Покрытие керамикой (2 слоя)</span><input type="checkbox" class="srv-chk" value="400"></label>
+      <label class="chk-row"><span>Детейлинг-химчистка салона</span><input type="checkbox" class="srv-chk" value="390"></label>
+      <div class="total-bar">
+        <div>
+          <div style="font-size:13px; color:#9A9AA6;">Предварительный расчет:</div>
+          <div style="font-size:32px; font-weight:800; color:#FF9500;" id="calc-res">1 450 BYN</div>
+        </div>
+        <a href="tg://resolve?domain=temaogg&text=Здравствуйте! Рассчитал стоимость детейлинга на сайте" class="btn">Зафиксировать цену в TG →</a>
+      </div>
+    </div>
+  </section>
+  <section id="why">
+    <h2>Почему автовладельцы доверяют нам</h2>
+    <div class="sub">Контроль каждого этапа с фото- и видеоотчетом в Telegram</div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>🛡️ Оригинальный полиуретан</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Используем только сертифицированные пленки SunTek, Llumar и STEK — не желтеют на солнце и самозатягиваются от тепла.</p>
+      </div>
+      <div class="card">
+        <h3>📸 Ежедневный фотоотчет</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Присылаем фото и видео процесса в мессенджер каждый день, пока автомобиль находится в работе.</p>
+      </div>
+      <div class="card">
+        <h3>🔬 Идеальная чистота бокса</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Профессиональный свет, система увлажнения воздуха от пыли и круглосуточная охрана с видеонаблюдением.</p>
+      </div>
+      <div class="card">
+        <h3>📄 Договор и гарантия</h3>
+        <p style="color:#9A9AA6; font-size:14px; margin-top:8px;">Фиксируем стоимость и сроки в договоре до начала работ. Бесплатный контрольный осмотр через 14 дней после оклейки.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы клиентов</h2>
+    <div class="sub">Реальные впечатления владельцев после посещения студии</div>
+    <div class="grid-3">
+      <div class="card">
+        <div style="color:#FF9500; margin-bottom:8px;">★★★★★</div>
+        <p style="color:#D1D1D6; font-size:14px; margin-bottom:14px;">«Оклеивал переднюю часть нового BMW X5 в матовый полиуретан. Подвороты сделаны идеально, стыков вообще не видно. Рекомендую!»</p>
+        <div style="font-size:13px; color:#9A9AA6; font-weight:600;">Дмитрий • BMW X5 G05</div>
+      </div>
+      <div class="card">
+        <div style="color:#FF9500; margin-bottom:8px;">★★★★★</div>
+        <p style="color:#D1D1D6; font-size:14px; margin-bottom:14px;">«Делал полную химчистку салона и 2 слоя керамики на черный Mercedes. Машина блестит лучше, чем выезжала из автосалона.»</p>
+        <div style="font-size:13px; color:#9A9AA6; font-weight:600;">Алексей • Mercedes E-Class</div>
+      </div>
+      <div class="card">
+        <div style="color:#FF9500; margin-bottom:8px;">★★★★★</div>
+        <p style="color:#D1D1D6; font-size:14px; margin-bottom:14px;">«Ребята спасли белый кожаный салон после пролитого кофе. Всё разобрали, вычистили паром и обработали защитным кремом.»</p>
+        <div style="font-size:13px; color:#9A9AA6; font-weight:600;">Екатерина • Audi Q7</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>Частые вопросы</h2>
+    <div class="sub">Ответы на популярные вопросы перед записью в студию</div>
+    <div class="acc-item open">
+      <div class="acc-h"><span>Сколько времени занимает оклейка зон риска?</span><span>+</span></div>
+      <div class="acc-b">Оклейка передней части автомобиля (бампер, капот, фары, крылья, стойки) занимает 1–2 рабочих дня с учетом подготовки кузова и просушки краев.</div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-h"><span>Можно ли мыть машину на мойке самообслуживания после пленки?</span><span>+</span></div>
+      <div class="acc-b">Да, через 7 дней после оклейки автомобиль можно мыть на любых мойках. Единственное правило — держать пистолет АВД на расстоянии не ближе 40–50 см от краев пленки.</div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-h"><span>Портится ли родная краска при снятии полиуретана?</span><span>+</span></div>
+      <div class="acc-b">Нет, качественный полиуретан снимается без следов клея и сохраняет заводское ЛКП в первозданном виде, что значительно повышает цену авто при продаже.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div style="font-weight:700; color:#fff; margin-bottom:6px;">BLACKLINE DETAILING • Минск, пр-т Победителей, 104</div>
+    <div>Ежедневно 10:00 – 21:00 • Запись через Telegram</div>
+  </footer>
+</div>
+
+<script>
+  var k = 1;
+  function updateCalc() {
+    var sum = 0;
+    document.querySelectorAll('.srv-chk:checked').forEach(function(c) { sum += parseFloat(c.value); });
+    document.getElementById('calc-res').innerText = Math.round(sum * k).toLocaleString('ru-RU') + ' BYN';
+  }
+  document.getElementById('cls-bar').onclick = function(e) {
+    if (!e.target.dataset.k) return;
+    k = parseFloat(e.target.dataset.k);
+    document.querySelectorAll('.cls-btn').forEach(function(b) { b.classList.remove('active'); });
+    e.target.classList.add('active');
+    updateCalc();
+  };
+  document.querySelectorAll('.srv-chk').forEach(function(c) { c.onchange = updateCalc; });
+  document.querySelectorAll('.acc-h').forEach(function(h) {
+    h.onclick = function() { h.parentElement.classList.toggle('open'); };
+  });
+  var cards = document.querySelectorAll('.card');
+  function reveal() {
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].getBoundingClientRect().top < window.innerHeight - 30) cards[i].classList.add('show');
+    }
+  }
+  window.addEventListener('scroll', reveal);
+  reveal();
+</script>
+</body>
+</html>
